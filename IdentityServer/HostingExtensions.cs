@@ -11,8 +11,13 @@ internal static class HostingExtensions
 
         builder.Services.AddIdentityServer(options =>
             {
+                options.AccessTokenJwtType = "JWT";
                 // https://docs.duendesoftware.com/identityserver/v6/fundamentals/resources/api_scopes#authorization-based-on-scopes
-                options.EmitStaticAudienceClaim = true;
+                /* Static audience claim is required for .net Framework 4.x
+                 * otherwise the token will not be accepted by the token validation package within
+                 * those solutions
+                 */
+                options.EmitStaticAudienceClaim = true;                
             })
             .AddInMemoryIdentityResources(Config.IdentityResources)
             .AddInMemoryApiScopes(Config.ApiScopes)
