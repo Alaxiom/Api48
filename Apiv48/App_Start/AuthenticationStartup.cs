@@ -13,9 +13,38 @@ namespace Apiv48.App_Start
             app.UseIdentityServerBearerTokenAuthentication(
                 new IdentityServerBearerTokenAuthenticationOptions
                 {
+                    
                     Authority = "https://localhost:5001",
+
+                    // Explicitly state from where the token will be sourced. Just in case auth cookie middleware added, or existing
+                    
+                    AuthenticationType = "Bearer",
+                    /*
+                     * Setting the validation mode to local forces the api to download the public certificate
+                     * from identity server, in this repo that would be the following endpoint:
+                     * 
+                     * https://localhost:5001/.well-known/openid-configuration/jwks
+                     * 
+                     * and validate the token certificate locally (within the api).
+                     * 
+                     * Setting as ValidationMode.ValidationEndpoint causes the api to present the token to 
+                     * identity server to validate
+                     * 
+                     * Not setting the ValidationMode, or setting it to ValidationMode.Both causes some heuristic to kick
+                     * in whereby the IdServ package within the api determines which of Local or ValidationEndpoint to apply
+                     * during that query session, see:
+                     * https://stackoverflow.com/questions/36844391/how-useidentityserverbearertokenauthentication-validates-the-jwt-token-with-loc
+                     * 
+                     * However, there have been reported timeout issues with the both option so would recommend setting this as Local
+                     * 
+                     */
                     ValidationMode = ValidationMode.Local,
-                    RequiredScopes = new[] { "api2" }
+                    
+                    RequiredScopes = new[] { "api2" },       
+                    
+                    RoleClaimType = "role",
+                    // If name not being set, but using the unique id as name
+                    NameClaimType = "sub"
                 });            
         }
     }
