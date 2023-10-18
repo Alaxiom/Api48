@@ -1,4 +1,6 @@
-﻿using System.Web.Http;
+﻿using System.Net.Http.Formatting;
+using System.Net.Http.Headers;
+using System.Web.Http;
 
 namespace Apiv48
 {
@@ -16,6 +18,9 @@ namespace Apiv48
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
+
+            config.Formatters.JsonFormatter.MediaTypeMappings.Add(
+                new QueryStringMapping("type", "json", new MediaTypeHeaderValue("application/json")));
         }
     }
 }

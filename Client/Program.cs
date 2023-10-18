@@ -53,15 +53,16 @@ Console.ForegroundColor = ConsoleColor.Yellow;
 Console.WriteLine("Running against NET Framework 4.8 API");
 Console.ResetColor();
 
-var response = await apiClient.GetAsync("https://localhost:44380/identity");
+var response = await apiClient.GetAsync("https://localhost:44380/api/identity?type=json");
 
 if (!response.IsSuccessStatusCode)
 {
     Console.WriteLine(response.StatusCode);
 }
 else
-{
-    Console.WriteLine($"Done: {response.StatusCode}");
+{    
+    var doc48 = JsonDocument.Parse(await response.Content.ReadAsStringAsync()).RootElement;
+    Console.WriteLine(JsonSerializer.Serialize(doc48, new JsonSerializerOptions { WriteIndented = true }));
 }
 
 Console.ReadLine();

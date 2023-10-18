@@ -1,6 +1,7 @@
 ﻿using IdentityServer3.AccessTokenValidation;
 using Microsoft.Owin;
 using Owin;
+using System.IdentityModel.Tokens;
 
 [assembly: OwinStartup(typeof(Apiv48.App_Start.AuthenticationStartup))]
 
@@ -10,6 +11,9 @@ namespace Apiv48.App_Start
     {
         public void Configuration(IAppBuilder app)
         {
+            // May or may not want to do this.  Look at name difference in User.Identity            
+            JwtSecurityTokenHandler.InboundClaimTypeMap.Clear();            
+
             app.UseIdentityServerBearerTokenAuthentication(
                 new IdentityServerBearerTokenAuthenticationOptions
                 {
@@ -43,7 +47,9 @@ namespace Apiv48.App_Start
                     RequiredScopes = new[] { "api2" },       
                     
                     RoleClaimType = "role",
-                    // If name not being set, but using the unique id as name
+                    /* Using the unique id as name, this will push the value from sub into the identity if the
+                     * inbound claims are cleared
+                     */
                     NameClaimType = "sub"
                 });            
         }
