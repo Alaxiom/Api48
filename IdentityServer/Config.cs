@@ -11,7 +11,7 @@ public static class Config
         new IdentityResources.OpenId(),
         new IdentityResources.Profile(),
     };
-    
+
     public static IEnumerable<ApiScope> ApiScopes =>
     new List<ApiScope>
     {
@@ -55,6 +55,26 @@ public static class Config
             AllowOfflineAccess = true,
 
             AllowedScopes = new List<string>
+            {
+                IdentityServerConstants.StandardScopes.OpenId,
+                IdentityServerConstants.StandardScopes.Profile,
+                "api1",
+                "api2"
+            }
+        },
+        // JavaScript Client
+        new Client
+        {
+            ClientId = "js",
+            ClientName = "JavaScript Client",
+            AllowedGrantTypes = GrantTypes.Code,
+            RequireClientSecret = false,
+
+            RedirectUris =           { "https://localhost:5003/callback.html" },
+            PostLogoutRedirectUris = { "https://localhost:5003/index.html" },
+            AllowedCorsOrigins =     { "https://localhost:5003" },
+
+            AllowedScopes =
             {
                 IdentityServerConstants.StandardScopes.OpenId,
                 IdentityServerConstants.StandardScopes.Profile,
