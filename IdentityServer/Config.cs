@@ -70,9 +70,9 @@ public static class Config
             AllowedGrantTypes = GrantTypes.Code,
             RequireClientSecret = false,
 
-            RedirectUris =           { "https://localhost:5003/callback.html" },
-            PostLogoutRedirectUris = { "https://localhost:5003/index.html" },
-            AllowedCorsOrigins =     { "https://localhost:5003" },
+            RedirectUris =           { "https://localhost:5003/callback.html",  "https://localhost:5004/callback.html" },
+            PostLogoutRedirectUris = { "https://localhost:5003/index.html", "https://localhost:5004/index.html" },
+            AllowedCorsOrigins =     { "https://localhost:5003", "https://localhost:5004" },
 
             AllowedScopes =
             {
